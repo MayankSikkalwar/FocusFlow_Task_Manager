@@ -13,6 +13,10 @@ const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userId: {
+      type: String,
+      required: true, // Clerk userId
+    },
   },
   { timestamps: true }
 );
