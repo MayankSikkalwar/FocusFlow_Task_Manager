@@ -30,16 +30,19 @@ export const getTasks = async (req, res) => {
 // UPDATE TASK
 export const updateTask = async (req, res) => {
   try {
+    const userId = getUserId(req);
     const { id } = req.params;
 
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: id, userId },
       req.body,
       { new: true }
     );
 
     if (!updatedTask) {
-      return res.status(404).json({ message: "Task not found" });
+      return res
+        .status(404)
+        .json({ message: "Task not found or not authorized" });
     }
 
     res.status(200).json(updatedTask);
@@ -51,12 +54,18 @@ export const updateTask = async (req, res) => {
 // DELETE TASK
 export const deleteTask = async (req, res) => {
   try {
+    const userId = getUserId(req);
     const { id } = req.params;
 
-    const deletedTask = await Task.findByIdAndDelete(id);
+    const deletedTask = await Task.findOneAndDelete({
+      _id: id,
+      userId,
+    });
 
     if (!deletedTask) {
-      return res.status(404).json({ message: "Task not found" });
+      return res
+        .status(404)
+        .json({ message: "Task not found or not authorized" });
     }
 
     res.status(200).json({ message: "Task deleted successfully" });
@@ -64,3 +73,4 @@ export const deleteTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
