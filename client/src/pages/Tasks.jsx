@@ -1,26 +1,40 @@
+import { useState } from "react";
 import TaskCard from "../components/app/TaskCard";
 
 export default function Tasks() {
-  const mockTasks = [
+  const [tasks, setTasks] = useState([
     {
       id: 1,
       title: "Revise React fundamentals",
       description: "Go through hooks, props, and component patterns",
       tag: "Learning",
+      completed: false,
     },
     {
       id: 2,
       title: "DSA practice – Arrays",
       description: "Solve 5 medium-level problems",
       tag: "Placement Prep",
+      completed: false,
     },
     {
       id: 3,
       title: "Build FocusFlow task UI",
       description: "Design calm glassmorphism task cards",
       tag: "Project",
+      completed: false,
     },
-  ];
+  ]);
+
+  const toggleTask = (id) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
+      )
+    );
+  };
 
   return (
     <div>
@@ -36,12 +50,14 @@ export default function Tasks() {
 
       {/* Task list */}
       <div className="space-y-4 max-w-2xl">
-        {mockTasks.map((task) => (
+        {tasks.map((task) => (
           <TaskCard
             key={task.id}
             title={task.title}
             description={task.description}
             tag={task.tag}
+            completed={task.completed}
+            onToggle={() => toggleTask(task.id)}
           />
         ))}
       </div>
