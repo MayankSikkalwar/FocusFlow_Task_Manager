@@ -9,6 +9,9 @@ import { requireAuth } from "../middlewares/clerkAuth.js"
 
 const router = express.Router();
 
+// Protect ALL task routes
+router.use(requireAuth);
+
 router.post("/", createTask);
 router.get("/", getTasks);
 router.put("/:id", updateTask);
