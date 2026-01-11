@@ -37,7 +37,7 @@ export default function Tasks() {
   };
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto">
       {/* Page header */}
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-slate-100">
