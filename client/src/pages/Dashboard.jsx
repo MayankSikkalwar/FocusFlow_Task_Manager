@@ -1,6 +1,15 @@
 import StatCard from "../components/app/StatCard";
 
+function getGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
 export default function Dashboard() {
+  const greeting = getGreeting();
   // Mock data (backend later)
   const stats = {
     total: 8,
@@ -13,7 +22,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-slate-100">
-          Good evening 👋
+          {greeting}
         </h1>
         <p className="text-slate-400 mt-1">
           Let’s focus on what matters today.
