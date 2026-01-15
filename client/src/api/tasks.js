@@ -43,9 +43,29 @@ export function useTasksApi() {
 
     return res.json();
   };
+  //update task
+  const updateTask = async (id, updates) => {
+    const token = await getToken();
+
+    const res = await fetch(`${API_URL}/tasks/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update task");
+    }
+
+    return res.json();
+  };
 
   return {
     getTasks,
     createTask,
+    updateTask,
   };
 }

@@ -3,7 +3,7 @@ import TaskCard from "../components/app/TaskCard";
 import { useTasksApi } from "../api/tasks";
 
 export default function Tasks() {
-  const { getTasks, createTask } = useTasksApi();
+  const { getTasks, createTask ,updateTask} = useTasksApi();
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -115,7 +115,28 @@ export default function Tasks() {
               key={task._id}
               title={task.title}
               completed={task.completed}
-              onToggle={() => {}}
+              onToggle={async () => {
+                const previous = task.completed;
+
+                // optimistic UI
+                setTasks((prev) =>
+                  prev.map((t) =>
+                    t._id === task._id ? { ...t, completed: !t.completed } : t
+                  )
+                );
+
+                try {
+                  await updateTask(task._id, { completed: !previous });
+                } catch {
+                  // rollback
+                  setTasks((prev) =>
+                    prev.map((t) =>
+                      t._id === task._id ? { ...t, completed: previous } : t
+                    )
+                  );
+                  alert("Failed to update task");
+                }
+              }}
             />
           ))
         )}
