@@ -4,6 +4,7 @@ export default function TaskCard({
   tag,
   completed,
   onToggle,
+  onDelete,
 }) {
   return (
     <div
@@ -64,6 +65,19 @@ export default function TaskCard({
             </span>
           </div>
         </div>
+
+        {/* Delete */}
+        <button
+          onClick={onDelete}
+          className="
+            text-xs
+            text-slate-500
+            hover:text-red-400
+            transition
+          "
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import TaskCard from "../components/app/TaskCard";
 import { useTasksApi } from "../api/tasks";
 
 export default function Tasks() {
-  const { getTasks, createTask ,updateTask} = useTasksApi();
+  const { getTasks, createTask, updateTask, deleteTask } = useTasksApi();
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -135,6 +135,19 @@ export default function Tasks() {
                     )
                   );
                   alert("Failed to update task");
+                }
+              }}
+              onDelete={async () => {
+                const previousTasks = tasks;
+
+                // optimistic delete
+                setTasks((prev) => prev.filter((t) => t._id !== task._id));
+
+                try {
+                  await deleteTask(task._id);
+                } catch {
+                  setTasks(previousTasks);
+                  alert("Failed to delete task");
                 }
               }}
             />
